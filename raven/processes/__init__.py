@@ -7,7 +7,7 @@ from .wps_raven_hbv_ec import RavenHBVECProcess
 from .wps_objective_functions import ObjectiveFunctionProcess
 #from .wps_regionalisation import RegionalisationProcess
 from .wps_frequency_analysis import FrequencyAnalysisProcess
-
+from .wps_hydro_indicators import HydroIndicatorsProcess
 processes = [
     RavenProcess(),
     GR4JCemaNeigeProcess(),
@@ -16,7 +16,8 @@ processes = [
     RavenHMETSProcess(),
     RavenHBVECProcess(),
     ObjectiveFunctionProcess(),
-    FrequencyAnalysisProcess()
+    FrequencyAnalysisProcess(),
+    HydroIndicatorsProcess(),
     # RegionalisationProcess(),
     
 ]
