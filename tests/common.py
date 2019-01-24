@@ -46,6 +46,7 @@ TESTDATA['raven-hbv-ec'] = TD / 'raven-hbv-ec'
 TESTDATA['raven-hbv-ec-rv'] = tuple((TD / 'raven-hbv-ec').glob('raven-hbv-ec-salmon.rv?'))
 TESTDATA['raven-hbv-ec-ts'] = tuple((TD / 'raven-hbv-ec').glob('Salmon-River-Near-Prince-George_*.rvt'))
 
+TESTDATA['ind-freq']= TD / 'FFA_Indicators' / 'data_test.nc'
 
 class WpsTestClient(WpsClient):
 
