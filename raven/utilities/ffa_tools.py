@@ -39,7 +39,7 @@ def read_flow_file(file_name,**kwds):
     return df
 
 
-def extract_maxima_series(df, time_period, extreme_type, **kwds):
+def extract_maxima_series(df, time_period='year', extreme_type='high', **kwds):
     """
     extract_AMS
 
@@ -129,7 +129,7 @@ def extract_maxima_series(df, time_period, extreme_type, **kwds):
         raise ValueError(e)
 
 
-def flood_frequency_analysis(data,dist,extreme_type,T,**kwds):
+def flood_frequency_analysis(data,dist='genextreme',extreme_type='high',T=20,**kwds):
     """
     flood_frequency_analysis
 
