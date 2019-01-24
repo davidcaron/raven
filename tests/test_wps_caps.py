@@ -21,5 +21,6 @@ def test_wps_caps():
                   'raven-hbv-ec',
                   'objective-function',
                   # 'regionalisation',
-                  'frequency-analysis'
+                  'frequency-analysis',
+                  'hydro-indicators'
                   }
