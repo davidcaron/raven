@@ -42,7 +42,7 @@ class Raven:
     >>> r.configure()
 
     """
-    identifier = 'generic-raven'
+    identifier = 'generic_raven'
     templates = ()
 
     # Allowed configuration file extensions
@@ -643,7 +643,7 @@ class Ostrich(Raven):
       The Ostrich templates
 
     """
-    identifier = 'generic-ostrich'
+    identifier = 'generic_ostrich'
     _rvext = ('rvi', 'rvp', 'rvc', 'rvh', 'rvt', 'txt')
     txt = RV()
 
