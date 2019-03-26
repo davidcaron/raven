@@ -26,7 +26,7 @@ hbvec = LiteralInput('hbvec', 'Comma separated list of HBV-EC parameters',
 
 
 class RavenMultiModelProcess(RavenProcess):
-    identifier = 'raven-multi-model'
+    identifier = 'raven_multi_model'
     abstract = 'Multi model simulation'
     title = ''
     version = ''

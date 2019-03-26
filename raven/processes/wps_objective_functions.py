@@ -37,7 +37,7 @@ class ObjectiveFunctionProcess(Process):
 
         super(ObjectiveFunctionProcess, self).__init__(
             self._handler,
-            identifier="objective-function",
+            identifier="objective_function",
             title="Objective-function process based on SpotPy and its 17 objective functions.",
             version="1.0",
             abstract="This process takes two NETCDF files (one containing variable 'q_sim' and the other 'q_obs') "

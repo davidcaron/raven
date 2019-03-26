@@ -104,7 +104,7 @@ class OstrichHBVECProcess(OstrichProcess):
     rain, snow minimum and maximum temperature as well as potential evapotranspiration. To run diagnostics, observed
     stream flows are also required.
     """
-    identifier = 'ostrich-hbv-ec'
+    identifier = 'ostrich_hbv_ec'
     abstract = 'OSTRICH calibration of RAVEN HBV-EC hydrological model'
     title = ''
     version = ''

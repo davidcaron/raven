@@ -42,7 +42,7 @@ class RavenGR4JCemaNeigeProcess(RavenProcess):
 
     """
 
-    identifier = 'raven-gr4j-cemaneige'
+    identifier = 'raven_gr4j_cemaneige'
     abstract = 'Raven GR4J + CEMANEIGE hydrological model'
     title = ''
     version = ''

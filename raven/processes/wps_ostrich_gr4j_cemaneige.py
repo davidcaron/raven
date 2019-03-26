@@ -3,7 +3,7 @@ from raven.models import GR4JCN_OST
 from . import wpsio as wio
 import logging
 from pywps import FORMATS, LiteralInput, ComplexOutput
-import pdb
+
 from pathlib import Path
 
 LOGGER = logging.getLogger("PYWPS")
@@ -59,7 +59,7 @@ class OstrichGR4JCemaNeigeProcess(OstrichProcess):
     rain, snow minimum and maximum temperature as well as potential evapotranspiration. To run diagnostics, observed
     stream flows are also required.
     """
-    identifier = 'ostrich-gr4j-cemaneige'
+    identifier = 'ostrich_gr4j_cemaneige'
     abstract = 'OSTRICH calibration of RAVEN GR4J + CEMANEIGE hydrological model'
     title = ''
     version = ''

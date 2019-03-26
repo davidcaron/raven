@@ -37,7 +37,7 @@ params = LiteralInput('params', 'Comma separated list of model parameters',
 
 
 class RavenHBVECProcess(RavenProcess):
-    identifier = 'raven-hbv-ec'
+    identifier = 'raven_hbv_ec'
     abstract = 'HBV-EC hydrological model'
     title = ''
     version = ''

@@ -104,7 +104,7 @@ class OstrichHMETSProcess(OstrichProcess):
     rain, snow minimum and maximum temperature as well as potential evapotranspiration. To run diagnostics, observed
     stream flows are also required.
     """
-    identifier = 'ostrich-hmets'
+    identifier = 'ostrich_hmets'
     abstract = 'OSTRICH calibration of RAVEN HMETS hydrological model'
     title = ''
     version = ''

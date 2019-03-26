@@ -32,7 +32,7 @@ hrus = LiteralInput('hrus', 'Comma separated list of HRU parameters',
 
 
 class RavenMOHYSEProcess(RavenProcess):
-    identifier = 'raven-mohyse'
+    identifier = 'raven_mohyse'
     abstract = 'MOHYSE hydrological model'
     title = 'TODO'
     version = ''
