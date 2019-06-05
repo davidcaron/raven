@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Processes &#8212; Raven 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Notebooks" href="notebooks/index.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="processes">
+<span id="id1"></span><h1>Processes<a class="headerlink" href="#processes" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#raven-emulated-models" id="id2">Raven emulated models</a></p></li>
+<li><p><a class="reference internal" href="#diagnostics-functions" id="id3">Diagnostics functions</a></p></li>
+</ul>
+</div>
+<div class="section" id="raven-emulated-models">
+<h2><a class="toc-backref" href="#id2">Raven emulated models</a><a class="headerlink" href="#raven-emulated-models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="raven.processes.RavenProcess">
+<em class="property">class </em><code class="sig-prename descclassname">raven.processes.</code><code class="sig-name descname">RavenProcess</code><a class="reference internal" href="_modules/raven/processes/wps_raven.html#RavenProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#raven.processes.RavenProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong class="program">raven</strong> Run the Raven hydrological framework using model configuration files and forcing time series. In the <cite>rvt</cite> file, only provide the name of the forcing file, not an absolute or relative path. (v0.1)</p>
+<p>Raven hydrological framework</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">text/plain</em>, <em class="mimetype">application/x-zipped-shp</em>) – Files (text or netCDF) storingdaily liquid precipitation (pr), solid precipitation (prsn), minimum temperature (tasmin), maximum temperature (tasmax), potential evapotranspiration (evspsbl) and observed streamflow (qobs [m3/s]).</p></li>
+<li><p><strong>conf</strong> (<em class="mimetype">text/plain</em>) – Model configuration files, including the primary input file (rvi), the parameter input file (rvp), the basin definition file (rvh), the time series input file (rvt), the initial conditions file (rvc). For Ostrich, include the Ostrich calibration config (txt) and templates (tpl).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>hydrograph</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file containing the outflow hydrographs (in m3/s) for all subbasinsspecified as <cite>gauged</cite> in the .rvh file. It reports period-ending time-averaged flows for the preceding time step, as is consistent with most measured stream gauge data (again, the initial flow conditions at the start of the first time step are included). If observed hydrographs are specified, they will be output adjacent to the corresponding modelled  hydrograph.</p></li>
+<li><p><strong>storage</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file describing the total storage of water (in mm) in all water storage compartments for each time step of the simulation. Mass balance errors, cumulative input (precipitation), and output (channel losses) are also included. Note that the precipitation rates in this file are period-ending, i.e., this is the precipitation rate for the time step preceding the time stamp; all water storage variables represent instantaneous reports of the storage at the time stamp indicate.</p></li>
+<li><p><strong>solution</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – solution.rvc file to restart another simulation with the conditions at the end of this simulation.</p></li>
+<li><p><strong>diagnostics</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – Model diagnostic CSV file.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="raven.processes.RavenGR4JCemaNeigeProcess">
+<em class="property">class </em><code class="sig-prename descclassname">raven.processes.</code><code class="sig-name descname">RavenGR4JCemaNeigeProcess</code><a class="reference internal" href="_modules/raven/processes/wps_raven_gr4j_cemaneige.html#RavenGR4JCemaNeigeProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#raven.processes.RavenGR4JCemaNeigeProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong class="program">raven-gr4j-cemaneige</strong>  (v)</p>
+<p>Raven GR4J + CEMANEIGE hydrological model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">text/plain</em>, <em class="mimetype">application/x-zipped-shp</em>) – Files (text or netCDF) storingdaily liquid precipitation (pr), solid precipitation (prsn), minimum temperature (tasmin), maximum temperature (tasmax), potential evapotranspiration (evspsbl) and observed streamflow (qobs [m3/s]).</p></li>
+<li><p><strong>params</strong> (<em>string</em><em>, </em><em>optional</em>) – Parameters: GR4J_X1, GR4J_X2, GR4J_X3, GR4J_X4, CEMANEIGE_X1, CEMANEIGE_X2</p></li>
+<li><p><strong>start_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – Start date of the simulation (AAAA-MM-DD). Defaults to the start of the forcing file.</p></li>
+<li><p><strong>end_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – End date of the simulation (AAAA-MM-DD). Defaults to the end of the forcing file.</p></li>
+<li><p><strong>duration</strong> (<em>nonNegativeInteger</em><em>, </em><em>optional</em>) – Number of simulated days, defaults to the length of the input forcings.</p></li>
+<li><p><strong>run_name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name given to the simulation, for example &lt;watershed&gt;_&lt;experiment&gt;</p></li>
+<li><p><strong>name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the watershed the model is run for.</p></li>
+<li><p><strong>area</strong> (<em>float</em><em>, </em><em>optional</em>) – Watershed area (km2)</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – Watershed’s centroid latitude</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – Watershed’s centroid longitude</p></li>
+<li><p><strong>elevation</strong> (<em>float</em>) – Watershed’s mean elevation (m)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>hydrograph</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file containing the outflow hydrographs (in m3/s) for all subbasinsspecified as <cite>gauged</cite> in the .rvh file. It reports period-ending time-averaged flows for the preceding time step, as is consistent with most measured stream gauge data (again, the initial flow conditions at the start of the first time step are included). If observed hydrographs are specified, they will be output adjacent to the corresponding modelled  hydrograph.</p></li>
+<li><p><strong>storage</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file describing the total storage of water (in mm) in all water storage compartments for each time step of the simulation. Mass balance errors, cumulative input (precipitation), and output (channel losses) are also included. Note that the precipitation rates in this file are period-ending, i.e., this is the precipitation rate for the time step preceding the time stamp; all water storage variables represent instantaneous reports of the storage at the time stamp indicate.</p></li>
+<li><p><strong>solution</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – solution.rvc file to restart another simulation with the conditions at the end of this simulation.</p></li>
+<li><p><strong>diagnostics</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – Model diagnostic CSV file.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>RAVEN emulator for the GR4J-Cemaneige model.</p>
+<p>This process runs the GR4J-Cemaneige model using a RAVEN emulator. Users need to provide netCDF input files for
+rain, snow minimum and maximum temperature as well as potential evapotranspiration. To run diagnostics, observed
+stream flows are also required.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="raven.processes.RavenMOHYSEProcess">
+<em class="property">class </em><code class="sig-prename descclassname">raven.processes.</code><code class="sig-name descname">RavenMOHYSEProcess</code><a class="reference internal" href="_modules/raven/processes/wps_raven_mohyse.html#RavenMOHYSEProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#raven.processes.RavenMOHYSEProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong class="program">raven-mohyse</strong> TODO (v)</p>
+<p>MOHYSE hydrological model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">text/plain</em>, <em class="mimetype">application/x-zipped-shp</em>) – Files (text or netCDF) storingdaily liquid precipitation (pr), solid precipitation (prsn), minimum temperature (tasmin), maximum temperature (tasmax), potential evapotranspiration (evspsbl) and observed streamflow (qobs [m3/s]).</p></li>
+<li><p><strong>params</strong> (<em>string</em><em>, </em><em>optional</em>) – Parameters: par_x01, par_x02, par_x03, par_x04, par_x05, par_x06, par_x07, par_x08</p></li>
+<li><p><strong>hrus</strong> (<em>string</em><em>, </em><em>optional</em>) – Parameters: par_x09, par_x10</p></li>
+<li><p><strong>start_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – Start date of the simulation (AAAA-MM-DD). Defaults to the start of the forcing file.</p></li>
+<li><p><strong>end_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – End date of the simulation (AAAA-MM-DD). Defaults to the end of the forcing file.</p></li>
+<li><p><strong>duration</strong> (<em>nonNegativeInteger</em><em>, </em><em>optional</em>) – Number of simulated days, defaults to the length of the input forcings.</p></li>
+<li><p><strong>run_name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name given to the simulation, for example &lt;watershed&gt;_&lt;experiment&gt;</p></li>
+<li><p><strong>name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the watershed the model is run for.</p></li>
+<li><p><strong>area</strong> (<em>float</em><em>, </em><em>optional</em>) – Watershed area (km2)</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – Watershed’s centroid latitude</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – Watershed’s centroid longitude</p></li>
+<li><p><strong>elevation</strong> (<em>float</em>) – Watershed’s mean elevation (m)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>hydrograph</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file containing the outflow hydrographs (in m3/s) for all subbasinsspecified as <cite>gauged</cite> in the .rvh file. It reports period-ending time-averaged flows for the preceding time step, as is consistent with most measured stream gauge data (again, the initial flow conditions at the start of the first time step are included). If observed hydrographs are specified, they will be output adjacent to the corresponding modelled  hydrograph.</p></li>
+<li><p><strong>storage</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file describing the total storage of water (in mm) in all water storage compartments for each time step of the simulation. Mass balance errors, cumulative input (precipitation), and output (channel losses) are also included. Note that the precipitation rates in this file are period-ending, i.e., this is the precipitation rate for the time step preceding the time stamp; all water storage variables represent instantaneous reports of the storage at the time stamp indicate.</p></li>
+<li><p><strong>solution</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – solution.rvc file to restart another simulation with the conditions at the end of this simulation.</p></li>
+<li><p><strong>diagnostics</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – Model diagnostic CSV file.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="raven.processes.RavenHMETSProcess">
+<em class="property">class </em><code class="sig-prename descclassname">raven.processes.</code><code class="sig-name descname">RavenHMETSProcess</code><a class="reference internal" href="_modules/raven/processes/wps_raven_hmets.html#RavenHMETSProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#raven.processes.RavenHMETSProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong class="program">raven-hmets</strong>  (v)</p>
+<p>HMETS hydrological model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">text/plain</em>, <em class="mimetype">application/x-zipped-shp</em>) – Files (text or netCDF) storingdaily liquid precipitation (pr), solid precipitation (prsn), minimum temperature (tasmin), maximum temperature (tasmax), potential evapotranspiration (evspsbl) and observed streamflow (qobs [m3/s]).</p></li>
+<li><p><strong>params</strong> (<em>string</em><em>, </em><em>optional</em>) – Parameters: GAMMA_SHAPE, GAMMA_SCALE, GAMMA_SHAPE2, GAMMA_SCALE2, MIN_MELT_FACTOR, MAX_MELT_FACTOR, DD_MELT_TEMP, DD_AGGRADATION, SNOW_SWI_MIN, SNOW_SWI_MAX, SWI_REDUCT_COEFF, DD_REFREEZE_TEMP, REFREEZE_FACTOR, REFREEZE_EXP, PET_CORRECTION, HMETS_RUNOFF_COEFF, PERC_COEFF, BASEFLOW_COEFF_1, BASEFLOW_COEFF_2, TOPSOIL, PHREATIC</p></li>
+<li><p><strong>start_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – Start date of the simulation (AAAA-MM-DD). Defaults to the start of the forcing file.</p></li>
+<li><p><strong>end_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – End date of the simulation (AAAA-MM-DD). Defaults to the end of the forcing file.</p></li>
+<li><p><strong>duration</strong> (<em>nonNegativeInteger</em><em>, </em><em>optional</em>) – Number of simulated days, defaults to the length of the input forcings.</p></li>
+<li><p><strong>run_name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name given to the simulation, for example &lt;watershed&gt;_&lt;experiment&gt;</p></li>
+<li><p><strong>name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the watershed the model is run for.</p></li>
+<li><p><strong>area</strong> (<em>float</em><em>, </em><em>optional</em>) – Watershed area (km2)</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – Watershed’s centroid latitude</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – Watershed’s centroid longitude</p></li>
+<li><p><strong>elevation</strong> (<em>float</em>) – Watershed’s mean elevation (m)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>hydrograph</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file containing the outflow hydrographs (in m3/s) for all subbasinsspecified as <cite>gauged</cite> in the .rvh file. It reports period-ending time-averaged flows for the preceding time step, as is consistent with most measured stream gauge data (again, the initial flow conditions at the start of the first time step are included). If observed hydrographs are specified, they will be output adjacent to the corresponding modelled  hydrograph.</p></li>
+<li><p><strong>storage</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file describing the total storage of water (in mm) in all water storage compartments for each time step of the simulation. Mass balance errors, cumulative input (precipitation), and output (channel losses) are also included. Note that the precipitation rates in this file are period-ending, i.e., this is the precipitation rate for the time step preceding the time stamp; all water storage variables represent instantaneous reports of the storage at the time stamp indicate.</p></li>
+<li><p><strong>solution</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – solution.rvc file to restart another simulation with the conditions at the end of this simulation.</p></li>
+<li><p><strong>diagnostics</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – Model diagnostic CSV file.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="raven.processes.RavenHBVECProcess">
+<em class="property">class </em><code class="sig-prename descclassname">raven.processes.</code><code class="sig-name descname">RavenHBVECProcess</code><a class="reference internal" href="_modules/raven/processes/wps_raven_hbv_ec.html#RavenHBVECProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#raven.processes.RavenHBVECProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong class="program">raven-hbv-ec</strong>  (v)</p>
+<p>HBV-EC hydrological model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">text/plain</em>, <em class="mimetype">application/x-zipped-shp</em>) – Files (text or netCDF) storingdaily liquid precipitation (pr), solid precipitation (prsn), minimum temperature (tasmin), maximum temperature (tasmax), potential evapotranspiration (evspsbl) and observed streamflow (qobs [m3/s]).</p></li>
+<li><p><strong>params</strong> (<em>string</em><em>, </em><em>optional</em>) – Parameters: par_x01, par_x02, par_x03, par_x04, par_x05, par_x06, par_x07, par_x08, par_x09, par_x10, par_x11, par_x12, par_x13, par_x14, par_x15, par_x16, par_x17, par_x18, par_x19, par_x20, par_x21</p></li>
+<li><p><strong>start_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – Start date of the simulation (AAAA-MM-DD). Defaults to the start of the forcing file.</p></li>
+<li><p><strong>end_date</strong> (<em>dateTime</em><em>, </em><em>optional</em>) – End date of the simulation (AAAA-MM-DD). Defaults to the end of the forcing file.</p></li>
+<li><p><strong>duration</strong> (<em>nonNegativeInteger</em><em>, </em><em>optional</em>) – Number of simulated days, defaults to the length of the input forcings.</p></li>
+<li><p><strong>run_name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name given to the simulation, for example &lt;watershed&gt;_&lt;experiment&gt;</p></li>
+<li><p><strong>name</strong> (<em>string</em><em>, </em><em>optional</em>) – The name of the watershed the model is run for.</p></li>
+<li><p><strong>area</strong> (<em>float</em><em>, </em><em>optional</em>) – Watershed area (km2)</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – Watershed’s centroid latitude</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – Watershed’s centroid longitude</p></li>
+<li><p><strong>elevation</strong> (<em>float</em>) – Watershed’s mean elevation (m)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>hydrograph</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file containing the outflow hydrographs (in m3/s) for all subbasinsspecified as <cite>gauged</cite> in the .rvh file. It reports period-ending time-averaged flows for the preceding time step, as is consistent with most measured stream gauge data (again, the initial flow conditions at the start of the first time step are included). If observed hydrographs are specified, they will be output adjacent to the corresponding modelled  hydrograph.</p></li>
+<li><p><strong>storage</strong> (<em class="mimetype">application/x-netcdf</em>, <em class="mimetype">application/zip</em>) – A netCDF file describing the total storage of water (in mm) in all water storage compartments for each time step of the simulation. Mass balance errors, cumulative input (precipitation), and output (channel losses) are also included. Note that the precipitation rates in this file are period-ending, i.e., this is the precipitation rate for the time step preceding the time stamp; all water storage variables represent instantaneous reports of the storage at the time stamp indicate.</p></li>
+<li><p><strong>solution</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – solution.rvc file to restart another simulation with the conditions at the end of this simulation.</p></li>
+<li><p><strong>diagnostics</strong> (<em class="mimetype">text/plain</em>, <em class="mimetype">application/zip</em>) – Model diagnostic CSV file.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="diagnostics-functions">
+<h2><a class="toc-backref" href="#id3">Diagnostics functions</a><a class="headerlink" href="#diagnostics-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="raven.processes.ObjectiveFunctionProcess">
+<em class="property">class </em><code class="sig-prename descclassname">raven.processes.</code><code class="sig-name descname">ObjectiveFunctionProcess</code><a class="reference internal" href="_modules/raven/processes/wps_objective_functions.html#ObjectiveFunctionProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#raven.processes.ObjectiveFunctionProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong class="program">objective-function</strong> Objective-function process based on SpotPy and its 17 objective functions. (v1.0)</p>
+<p>This process takes two NETCDF files (one containing variable ‘q_sim’ and the other ‘q_obs’) and computes objective-function metrics between them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs</strong> (<em class="mimetype">application/x-netcdf</em>) – Steam flow observation time series</p></li>
+<li><p><strong>sim</strong> (<em class="mimetype">application/x-netcdf</em>) – Stream flow simulation time series</p></li>
+<li><p><strong>name</strong> (<em>{'agreementindex'</em><em>, </em><em>'bias'</em><em>, </em><em>'correlationcoefficient'</em><em>, </em><em>'covariance'</em><em>, </em><em>'decomposed_mse'</em><em>, </em><em>'kge'</em><em>, </em><em>'log_p'</em><em>, </em><em>'lognashsutcliffe'</em><em>, </em><em>'mae'</em><em>, </em><em>'mse'</em><em>, </em><em>..}</em><em>, </em><em>optional</em>) – One or multiple objective function name. If None, defaults to all.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>metrics</strong> – Returns up to 17 objective function values, depending on the user’s requests. By default all 17 are returned. JSON dictionary format.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em class="mimetype">application/json</em></p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://fb09-pasig.umwelt.uni-giessen.de/spotpy/">SPOTPY Documentation</a></p></li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/birdhouse_logo.svg" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Raven</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/index.html">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="configuration.html" title="previous chapter">Configuration</a></li>
+      <li>Next: <a href="notebooks/index.html" title="next chapter">Notebooks</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, David Huard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/processes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

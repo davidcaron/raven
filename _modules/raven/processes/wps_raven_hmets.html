@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>raven.processes.wps_raven_hmets &#8212; Raven 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for raven.processes.wps_raven_hmets</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">raven</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">raven.processes</span> <span class="k">import</span> <span class="n">RavenProcess</span>
+<span class="kn">from</span> <span class="nn">pywps</span> <span class="k">import</span> <span class="n">LiteralInput</span>
+<span class="kn">from</span> <span class="nn">raven.models</span> <span class="k">import</span> <span class="n">HMETS</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">wpsio</span> <span class="k">as</span> <span class="n">wio</span>
+
+<span class="c1"># Defaults for this process</span>
+<span class="n">params_defaults</span> <span class="o">=</span> <span class="n">HMETS</span><span class="o">.</span><span class="n">params</span><span class="p">(</span><span class="n">GAMMA_SHAPE</span><span class="o">=</span><span class="mf">9.5019</span><span class="p">,</span>
+                               <span class="n">GAMMA_SCALE</span><span class="o">=</span><span class="mf">0.2774</span><span class="p">,</span>
+                               <span class="n">GAMMA_SHAPE2</span><span class="o">=</span><span class="mf">6.3942</span><span class="p">,</span>
+                               <span class="n">GAMMA_SCALE2</span><span class="o">=</span><span class="mf">0.6884</span><span class="p">,</span>
+                               <span class="n">MIN_MELT_FACTOR</span><span class="o">=</span><span class="mf">1.2875</span><span class="p">,</span>
+                               <span class="n">MAX_MELT_FACTOR</span><span class="o">=</span><span class="mf">5.4134</span><span class="p">,</span>
+                               <span class="n">DD_MELT_TEMP</span><span class="o">=</span><span class="mf">2.3641</span><span class="p">,</span>
+                               <span class="n">DD_AGGRADATION</span><span class="o">=</span><span class="mf">0.0973</span><span class="p">,</span>
+                               <span class="n">SNOW_SWI_MIN</span><span class="o">=</span><span class="mf">0.0464</span><span class="p">,</span>
+                               <span class="n">SNOW_SWI_MAX</span><span class="o">=</span><span class="mf">0.1998</span><span class="p">,</span>
+                               <span class="n">SWI_REDUCT_COEFF</span><span class="o">=</span><span class="mf">0.0222</span><span class="p">,</span>
+                               <span class="n">DD_REFREEZE_TEMP</span><span class="o">=-</span><span class="mf">1.0919</span><span class="p">,</span>
+                               <span class="n">REFREEZE_FACTOR</span><span class="o">=</span><span class="mf">2.6851</span><span class="p">,</span>
+                               <span class="n">REFREEZE_EXP</span><span class="o">=</span><span class="mf">0.3740</span><span class="p">,</span>
+                               <span class="n">PET_CORRECTION</span><span class="o">=</span><span class="mf">1.0000</span><span class="p">,</span>
+                               <span class="n">HMETS_RUNOFF_COEFF</span><span class="o">=</span><span class="mf">0.4739</span><span class="p">,</span>
+                               <span class="n">PERC_COEFF</span><span class="o">=</span><span class="mf">0.0114</span><span class="p">,</span>
+                               <span class="n">BASEFLOW_COEFF_1</span><span class="o">=</span><span class="mf">0.0243</span><span class="p">,</span>
+                               <span class="n">BASEFLOW_COEFF_2</span><span class="o">=</span><span class="mf">0.0069</span><span class="p">,</span>
+                               <span class="n">TOPSOIL</span><span class="o">=</span><span class="mf">310.7211</span><span class="p">,</span>
+                               <span class="n">PHREATIC</span><span class="o">=</span><span class="mf">916.1947</span><span class="p">)</span>
+
+
+<span class="n">params</span> <span class="o">=</span> <span class="n">LiteralInput</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="s1">&#39;Comma separated list of model parameters&#39;</span><span class="p">,</span>
+                      <span class="n">abstract</span><span class="o">=</span><span class="s1">&#39;Parameters: &#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">params_defaults</span><span class="o">.</span><span class="n">_fields</span><span class="p">),</span>
+                      <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;string&#39;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">params_defaults</span><span class="p">)),</span>
+                      <span class="n">min_occurs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">max_occurs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">max_parallel_processes</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RavenHMETSProcess"><a class="viewcode-back" href="../../../processes.html#raven.processes.RavenHMETSProcess">[docs]</a><span class="k">class</span> <span class="nc">RavenHMETSProcess</span><span class="p">(</span><span class="n">RavenProcess</span><span class="p">):</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="s1">&#39;raven-hmets&#39;</span>
+    <span class="n">abstract</span> <span class="o">=</span> <span class="s1">&#39;HMETS hydrological model&#39;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">model_cls</span> <span class="o">=</span> <span class="n">HMETS</span>
+    <span class="n">tuple_inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">HMETS</span><span class="o">.</span><span class="n">params</span><span class="p">}</span>
+
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">wio</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">start_date</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">end_date</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">run_name</span><span class="p">,</span>
+              <span class="n">wio</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">wio</span><span class="o">.</span><span class="n">elevation</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/birdhouse_logo.svg" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Raven</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../processes.html">Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/index.html">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer.html">Developer Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, David Huard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Developer Documentation &#8212; Raven 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Changes" href="changes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="developer-documentation">
+<h1>Developer Documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-raven-from-python">
+<h2>Running Raven from Python<a class="headerlink" href="#running-raven-from-python" title="Permalink to this headline">¶</a></h2>
+<p>The RAVEN hydrological model is designed to be run from the terminal; it’s not available as a routine in a library. To use it within Python means that we actually need to create configuration files on disk and then launch the RAVEN model in that directory. There is a considerable amount of boilerplate code involved that we’ve hidden in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Raven</span></code> class and subclasses for each emulated model.</p>
+<p>Here is an example of how the GR4J emulator would be called using input test data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">raven.models</span> <span class="kn">import</span> <span class="n">GR4JCemaneige</span>
+<span class="kn">from</span> <span class="nn">tests.common</span> <span class="kn">import</span> <span class="n">TESTDATA</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">TESTDATA</span><span class="p">[</span><span class="s1">&#39;raven-gr4j-cemaneige-nc-ts&#39;</span><span class="p">]</span>
+<span class="n">gr4j</span> <span class="o">=</span> <span class="n">GR4JCemaneige</span><span class="p">(</span><span class="n">workdir</span><span class="o">=</span><span class="s1">&#39;/tmp/test&#39;</span><span class="p">)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">gr4j</span><span class="o">.</span><span class="n">RVP</span><span class="o">.</span><span class="n">params</span><span class="p">(</span><span class="mf">0.529</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.396</span><span class="p">,</span> <span class="mf">407.29</span><span class="p">,</span> <span class="mf">1.072</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mf">0.947</span><span class="p">)</span>
+<span class="n">gr4j</span><span class="p">([</span><span class="n">ts</span><span class="p">,],</span>  <span class="n">rvp</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;params&#39;</span><span class="p">:</span><span class="n">params</span><span class="p">},</span> <span class="n">rvi</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;start_date&#39;</span><span class="p">:</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;end_date&#39;</span><span class="p">:</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)},</span> <span class="n">rvh</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;area&#39;</span><span class="p">:</span><span class="mi">4100</span><span class="p">})</span>
+<span class="n">gr4j</span><span class="o">.</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;DIAG_RMSE&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">39.701</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/birdhouse_logo.svg" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Raven</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processes.html">Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/index.html">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="changes.html" title="previous chapter">Changes</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, David Huard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/developer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
